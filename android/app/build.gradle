@@ -72,6 +72,10 @@ dependencies {
     // Remove jscFlavor if using Hermes
     // implementation jscFlavor
 }
+react {
+autolinkLibrariesWithApp()
+}
+
 
 // Apply native modules for React Native
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")

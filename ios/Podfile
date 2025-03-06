@@ -1,9 +1,7 @@
 ENV['RCT_NEW_ARCH_ENABLED'] = '1'  # Enable New Architecture
 platform :ios, '15.1'  # or '13.0' if needed
 require_relative '../node_modules/react-native/scripts/react_native_pods'
-
 prepare_react_native_project!
-
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -12,7 +10,7 @@ end
 
 target 'DealzupVendor' do
   config = use_native_modules!
-$RN_HERMES_ENGINE_PATH = '../node_modules/react-native/sdks/hermes'
+  $RN_HERMES_ENGINE_PATH = '../node_modules/react-native/sdks/hermes'
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -20,6 +18,13 @@ $RN_HERMES_ENGINE_PATH = '../node_modules/react-native/sdks/hermes'
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Add this line to enable Flipper
+  flipper_enabled = false
+ if flipper_enabled
+  require_relative '../node_modules/react-native-flipper/scripts/react_native_flipper'
+  $RN_Flipper_version = '0.273.0'
+  use_flipper!({ 'Flipper' => $RN_Flipper_version })
+end
   post_install do |installer|
     react_native_post_install(
       installer,
